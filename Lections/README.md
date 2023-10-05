@@ -536,4 +536,3 @@ class TestString(unittest.TestCase):
 - узнать степень покрытия кода тестами (coverage)
 - использовать `flake8` и `pyling` для проверки кода
 - использовать `factory boy` для генерации данных
-
