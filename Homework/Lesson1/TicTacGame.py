@@ -3,6 +3,11 @@ class TicTacGame:
         self.size = 3
         self.field = [[" " for _ in range(self.size)] for _ in range(self.size)]
 
+    def __repr__(self):
+        table_row = (chr(i) for i in range(ord('A'), ord('A') + self.size))
+        table_column = (i for i in range(1, self.size + 1))
+
+
     @staticmethod
     def main_menu():
         print("Добро пожаловать в игру \"Крестики-Нолики\"")
