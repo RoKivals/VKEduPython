@@ -149,12 +149,31 @@ class TicTacGame:
         print(f"{curr_player}, ваша очередь делать ход")
 
     def get_row_and_col(self):
-        row_number = 0
-        col_number = 0
+        try:
+            row_number = int(input("Выберите номер строки: "))
+            col_number = int(input("Выберите номер столбца: "))
+        except ValueError:
+            pass
         while (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
             row_number = int(input("Выберите номер строки:"))
             print()
             col_number = int(input("Выберите номер столбца:"))
+
+    def check_win(self, row, col, player):
+        symbol = player.symbol
+        # check main diag
+        if row == col:
+            for i in range(self.size):
+                if self.field[i][i] != symbol:
+                    break
+            else:
+                print(f"{player.name} - Победитель!")
+                input("Нажмите любую клавишу, чтобы закончить игру!")
+                sys.exit(0)
+
+        # check second diag
+        elif row == abs(self.size - col):
+            pass 
 
     def change_size(self):
         print("Укажите размер нового поля: ")
