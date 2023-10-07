@@ -1,15 +1,52 @@
+import os
+import sys
+import random
+
+
+class Player:
+    def __init__(self, name, symbol):
+        self.name = name
+        self.symbol = symbol
+
+
 class TicTacGame:
     def __init__(self):
-        self.size = 3
+        self._size = 15
         self.field = [[" " for _ in range(self.size)] for _ in range(self.size)]
 
     def __repr__(self):
-        table_row = (chr(i) for i in range(ord('A'), ord('A') + self.size))
-        table_column = (i for i in range(1, self.size + 1))
+        fields_numbers = [str(i + 1) for i in range(self.size)]
+        empty_space_in_corner = ' ' * (len(str(self.size)) + 1)
+        table_str = ""
+        table_str = table_str + empty_space_in_corner + " ".join(i for i in fields_numbers) + '\n'
 
+        for i in range(self.size):
+            table_str = table_str + f"{i + 1:>{len(str(self.size))}}"
+            for j in range(self.size):
+                table_str = table_str + ' ' + f"{self.field[i][j]:{' '}^{len(str(j + 1))}}"
+            table_str = table_str + '\n'
+
+        return table_str
+
+    def __del__(self):
+        os.system('cls||clear')
+        print("Спасибо за игру!")
+        sys.exit(0)
+
+    @property
+    def size(self):
+        return self._size
+
+    @size.setter
+    def size(self, new_size):
+        if new_size >= 3:
+            self._size = new_size
+        else:
+            self._size = 3
 
     @staticmethod
-    def main_menu():
+    def show_main_menu():
+        os.system('cls||clear')
         print("Добро пожаловать в игру \"Крестики-Нолики\"")
         print()
         print("Введите, чтобы выбрать действие")
@@ -20,22 +57,120 @@ class TicTacGame:
         ''')
 
     @staticmethod
-    def settings_menu():
-        pass
+    def show_settings_menu():
+        print("Введите, чтобы выбрать действие: ")
+        print('''
+                1. Изменить размеры поля
+                2. Вернуться
+        ''')
 
-    def show_board():
-        pass
+    @staticmethod
+    def show_start_game_menu(self):
+        print("Выберите режим, в котором хотите играть")
+        print("1. Два игрока")
+        print("2. Против ПК (Бета версия)")
+        print("3. Вернуться")
 
-    def validate_input():
-        pass
+    def main_menu(self):
+        flag = True
+        while flag:
+            self.show_main_menu()
+            choice = input().strip()
+            if choice == '1':
+                self.start_game_menu()
+                flag = False
+            elif choice == '2':
+                self.setting_menu()
+                continue
+            elif choice == '3' or choice == 'quit':
+                del self
+                flag = False
+            else:
+                print("Такого варианта нет, попробуйте заново:")
 
-    def start_game():
-        pass
+    def setting_menu(self):
+        flag = True
+        while flag:
+            self.show_settings_menu()
+            choice = input().strip()
+            if choice == '1':
+                self.change_size()
+                flag = False
+            elif choice == '2':
+                break
+            else:
+                print("Такого варианта нет, попробуйте заново:")
 
-    def check_winner():
-        pass
+    def start_game_menu(self):
+        flag = True
+        while flag:
+            self.show_start_game_menu()
+            choice = input().strip()
+            if choice == '1':
+                self.start_game_vs_user()
+                flag = False
+            elif choice == '2':
+                pass
+            elif choice == '3' or choice == 'quit':
+                break
+            else:
+                print("Такого варианта нет, попробуйте заново:")
+
+    @staticmethod
+    def input_names():
+        player_x = input("Введите имя первого игрока (играет крестиками): ")
+        player_o = input("Введите имя второго игрока (играет ноликами): ")
+        return Player(player_x, 'X'), Player(player_o, 'O')
+
+    @staticmethod
+    def choosing_order(self):
+        first_step = random.randint(1000) % 2
+        player_x, player_o = self.input_names()
+        if first_step == 0:
+            player_1 = player_x
+            player_2 = player_o
+        else:
+            player_1 = player_o
+            player_2 = player_x
+
+        print(f"{player_1}, вы ходите первым")
+        print()
+        return player_1, player_2
+
+    def start_game_vs_user(self):
+        player_1, player_2 = self.choosing_order()
+        count_steps = 0
+        curr_player = None
+        if count_steps % 2 == 0:
+            curr_player = player_1
+        else:
+            curr_player = player_2
+
+        print(f"{curr_player}, ваша очередь делать ход")
+
+    def get_row_and_col(self):
+        row_number = 0
+        col_number = 0
+        while (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
+            row_number = int(input("Выберите номер строки:"))
+            print()
+            col_number = int(input("Выберите номер столбца:"))
+
+    def change_size(self):
+        print("Укажите размер нового поля: ")
+        while True:
+            try:
+                new_size = int(input())
+                self.size = new_size
+                break
+            except ValueError:
+                print("Вам следует ввести число")
+
+    @size.setter
+    def size(self, value):
+        self._size = value
 
 
 if __name__ == "__main__":
-    game = TicTac()
-    game.start_game()
+    game = TicTacGame()
+    print(game)
