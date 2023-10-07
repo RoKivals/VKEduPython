@@ -28,7 +28,8 @@ class TicTacGame:
 
         return table_str
 
-    def __del__(self):
+    @staticmethod
+    def finish():
         os.system('cls||clear')
         print("Спасибо за игру!")
         sys.exit(0)
@@ -58,6 +59,7 @@ class TicTacGame:
 
     @staticmethod
     def show_settings_menu():
+        os.system('cls||clear')
         print("Введите, чтобы выбрать действие: ")
         print('''
                 1. Изменить размеры поля
@@ -65,7 +67,8 @@ class TicTacGame:
         ''')
 
     @staticmethod
-    def show_start_game_menu(self):
+    def show_start_game_menu():
+        os.system('cls||clear')
         print("Выберите режим, в котором хотите играть")
         print("1. Два игрока")
         print("2. Против ПК (Бета версия)")
@@ -78,12 +81,12 @@ class TicTacGame:
             choice = input().strip()
             if choice == '1':
                 self.start_game_menu()
-                flag = False
+                continue
             elif choice == '2':
                 self.setting_menu()
                 continue
             elif choice == '3' or choice == 'quit':
-                del self
+                self.finish()
                 flag = False
             else:
                 print("Такого варианта нет, попробуйте заново:")
@@ -117,12 +120,18 @@ class TicTacGame:
                 print("Такого варианта нет, попробуйте заново:")
 
     @staticmethod
-    def input_names():
+    def input_player_names(count):
+        res = []
+
+        if count > 2 or count <= 0:
+            raise ValueError("В эту игру нельзя играть таким кол-вом игроков")
+        for num in range(count):
+            new_player = input(f"Введите имя {num + 1} игрока")
+            new_symbol
         player_x = input("Введите имя первого игрока (играет крестиками): ")
         player_o = input("Введите имя второго игрока (играет ноликами): ")
         return Player(player_x, 'X'), Player(player_o, 'O')
 
-    @staticmethod
     def choosing_order(self):
         first_step = random.randint(1000) % 2
         player_x, player_o = self.input_names()
@@ -141,23 +150,41 @@ class TicTacGame:
         player_1, player_2 = self.choosing_order()
         count_steps = 0
         curr_player = None
-        if count_steps % 2 == 0:
-            curr_player = player_1
-        else:
-            curr_player = player_2
 
-        print(f"{curr_player}, ваша очередь делать ход")
+        while True:
+            if count_steps % 2 == 0:
+                curr_player = player_1
+            else:
+                curr_player = player_2
+
+            print(f"{curr_player}, ваша очередь делать ход")
+            curr_row, curr_col = self.get_row_and_col()
+            self.field[curr_row][curr_col] = curr_player.symbol
+            self.check_win(curr_row, curr_col, curr_player)
+            count_steps += 1
 
     def get_row_and_col(self):
-        try:
-            row_number = int(input("Выберите номер строки: "))
-            col_number = int(input("Выберите номер столбца: "))
-        except ValueError:
-            pass
-        while (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
-            row_number = int(input("Выберите номер строки:"))
-            print()
-            col_number = int(input("Выберите номер столбца:"))
+        while True:
+            try:
+                row_number = int(input("Выберите номер строки: "))
+                print()
+                col_number = int(input("Выберите номер столбца: "))
+                if (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
+                    print(f"Число должно быть в диапазоне от 1 до {self._size + 1}")
+                    continue
+
+                if not self.check_empty_cell(row_number, col_number):
+                    print("Эта ячейка уже занята, выберите другую")
+                    continue
+
+            except ValueError:
+                os.system('cls||clear')
+                print("Необходимо ввести число!")
+            else:
+                return row_number, col_number
+
+    def check_empty_cell(self, row, col):
+        return self.field[row][col] == ' '
 
     def check_win(self, row, col, player):
         symbol = player.symbol
@@ -171,9 +198,37 @@ class TicTacGame:
                 input("Нажмите любую клавишу, чтобы закончить игру!")
                 sys.exit(0)
 
-        # check second diag
-        elif row == abs(self.size - col):
-            pass 
+        # check side diag
+        elif row == abs(self.size - col - 1):
+            for i in range(self.size):
+                for j in range(self.size):
+                    if self.field[i][j] != symbol and i == self.size - j - 1:
+                        break
+                else:
+                    print(f"{player.name} - Победитель!")
+                    input("Нажмите любую клавишу, чтобы закончить игру!")
+                    sys.exit(0)
+
+        else:
+            # check vertical
+            j = col
+            for i in range(self.size):
+                if self.field[i][j] != symbol:
+                    break
+            else:
+                print(f"{player.name} - Победитель!")
+                input("Нажмите любую клавишу, чтобы закончить игру!")
+                sys.exit(0)
+
+            # check horizontal
+            i = row
+            for j in range(self.size):
+                if self.field[i][j] != symbol:
+                    break
+            else:
+                print(f"{player.name} - Победитель!")
+                input("Нажмите любую клавишу, чтобы закончить игру!")
+                sys.exit(0)
 
     def change_size(self):
         print("Укажите размер нового поля: ")
@@ -192,4 +247,4 @@ class TicTacGame:
 
 if __name__ == "__main__":
     game = TicTacGame()
-    print(game)
+    game.main_menu()
