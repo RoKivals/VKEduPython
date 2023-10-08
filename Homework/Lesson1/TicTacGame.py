@@ -6,7 +6,17 @@ import random
 class Player:
     def __init__(self, name, symbol):
         self.name = name
-        self.symbol = symbol
+        self._symbol = symbol
+
+    @property
+    def symbol(self):
+        return self._symbol
+
+    @symbol.setter
+    def symbol(self, val):
+        if val not in ['X', 'O']:
+            raise ValueError("Только X или O")
+        self._symbol = val
 
 
 class TicTacGame:
@@ -120,129 +130,138 @@ class TicTacGame:
                 print("Такого варианта нет, попробуйте заново:")
 
     @staticmethod
-    def input_player_names(count):
-        res = []
-
-        if count > 2 or count <= 0:
-            raise ValueError("В эту игру нельзя играть таким кол-вом игроков")
-        for num in range(count):
-            new_player = input(f"Введите имя {num + 1} игрока")
-            new_symbol
+    def input_player_names():
         player_x = input("Введите имя первого игрока (играет крестиками): ")
         player_o = input("Введите имя второго игрока (играет ноликами): ")
         return Player(player_x, 'X'), Player(player_o, 'O')
 
-    def choosing_order(self):
-        first_step = random.randint(1000) % 2
-        player_x, player_o = self.input_names()
-        if first_step == 0:
-            player_1 = player_x
-            player_2 = player_o
+    @staticmethod
+    def input_player_vs_pc_name():
+        symbols = ['X', 'O']
+        player_user = input("Введите своё имя: ")
+
+        while True:
+            symbol_user = input("Выберите ваш символ [X / O]: ")
+            if symbol_user not in symbols:
+                print("Такой символ недоступен.")
+                continue
+            symbols.remove(symbol_user)
+
+        player_pc = input("Введите имя для соперника: ")
+        return Player(player_user, symbol_user), Player(player_pc, *symbols)
+
+
+def choosing_order(self):
+    first_step = random.randint(1000) % 2
+    player_x, player_o = self.input_names()
+    if first_step == 0:
+        player_1 = player_x
+        player_2 = player_o
+    else:
+        player_1 = player_o
+        player_2 = player_x
+
+    print(f"{player_1}, вы ходите первым")
+    print()
+    return player_1, player_2
+
+
+def start_game_vs_user(self):
+    player_1, player_2 = self.choosing_order()
+    count_steps = 0
+
+    while True:
+        if count_steps % 2 == 0:
+            curr_player = player_1
         else:
-            player_1 = player_o
-            player_2 = player_x
+            curr_player = player_2
 
-        print(f"{player_1}, вы ходите первым")
-        print()
-        return player_1, player_2
+        print(f"{curr_player}, ваша очередь делать ход")
+        curr_row, curr_col = self.get_row_and_col()
+        self.field[curr_row][curr_col] = curr_player.symbol
+        self.check_win(curr_row, curr_col, curr_player)
+        count_steps += 1
 
-    def start_game_vs_user(self):
-        player_1, player_2 = self.choosing_order()
-        count_steps = 0
-        curr_player = None
 
-        while True:
-            if count_steps % 2 == 0:
-                curr_player = player_1
-            else:
-                curr_player = player_2
+def get_row_and_col(self):
+    while True:
+        try:
+            row_number = int(input("Выберите номер строки: "))
+            print()
+            col_number = int(input("Выберите номер столбца: "))
+            if (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
+                print(f"Число должно быть в диапазоне от 1 до {self._size + 1}")
+                continue
 
-            print(f"{curr_player}, ваша очередь делать ход")
-            curr_row, curr_col = self.get_row_and_col()
-            self.field[curr_row][curr_col] = curr_player.symbol
-            self.check_win(curr_row, curr_col, curr_player)
-            count_steps += 1
+            if not self.check_empty_cell(row_number, col_number):
+                print("Эта ячейка уже занята, выберите другую")
+                continue
 
-    def get_row_and_col(self):
-        while True:
-            try:
-                row_number = int(input("Выберите номер строки: "))
-                print()
-                col_number = int(input("Выберите номер столбца: "))
-                if (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
-                    print(f"Число должно быть в диапазоне от 1 до {self._size + 1}")
-                    continue
-
-                if not self.check_empty_cell(row_number, col_number):
-                    print("Эта ячейка уже занята, выберите другую")
-                    continue
-
-            except ValueError:
-                os.system('cls||clear')
-                print("Необходимо ввести число!")
-            else:
-                return row_number, col_number
-
-    def check_empty_cell(self, row, col):
-        return self.field[row][col] == ' '
-
-    def check_win(self, row, col, player):
-        symbol = player.symbol
-        # check main diag
-        if row == col:
-            for i in range(self.size):
-                if self.field[i][i] != symbol:
-                    break
-            else:
-                print(f"{player.name} - Победитель!")
-                input("Нажмите любую клавишу, чтобы закончить игру!")
-                sys.exit(0)
-
-        # check side diag
-        elif row == abs(self.size - col - 1):
-            for i in range(self.size):
-                for j in range(self.size):
-                    if self.field[i][j] != symbol and i == self.size - j - 1:
-                        break
-                else:
-                    print(f"{player.name} - Победитель!")
-                    input("Нажмите любую клавишу, чтобы закончить игру!")
-                    sys.exit(0)
-
+        except ValueError:
+            os.system('cls||clear')
+            print("Необходимо ввести число!")
         else:
-            # check vertical
-            j = col
-            for i in range(self.size):
-                if self.field[i][j] != symbol:
-                    break
-            else:
-                print(f"{player.name} - Победитель!")
-                input("Нажмите любую клавишу, чтобы закончить игру!")
-                sys.exit(0)
+            return row_number, col_number
 
-            # check horizontal
-            i = row
-            for j in range(self.size):
-                if self.field[i][j] != symbol:
-                    break
-            else:
-                print(f"{player.name} - Победитель!")
-                input("Нажмите любую клавишу, чтобы закончить игру!")
-                sys.exit(0)
 
-    def change_size(self):
-        print("Укажите размер нового поля: ")
-        while True:
-            try:
-                new_size = int(input())
-                self.size = new_size
+def check_empty_cell(self, row, col):
+    return self.field[row][col] == ' '
+
+
+def check_win(self, row, col, player):
+    symbol = player.symbol
+    # check main diag
+    if row == col:
+        for i in range(self.size):
+            if self.field[i][i] != symbol:
                 break
-            except ValueError:
-                print("Вам следует ввести число")
+        else:
+            print(f"{player.name} - Победитель!")
+            input("Нажмите любую клавишу, чтобы закончить игру!")
+            sys.exit(0)
 
-    @size.setter
-    def size(self, value):
-        self._size = value
+    # check side diag
+    elif row == abs(self.size - col - 1):
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.field[i][j] != symbol and i == self.size - j - 1:
+                    break
+            else:
+                print(f"{player.name} - Победитель!")
+                input("Нажмите любую клавишу, чтобы закончить игру!")
+                sys.exit(0)
+
+    else:
+        # check vertical
+        j = col
+        for i in range(self.size):
+            if self.field[i][j] != symbol:
+                break
+        else:
+            print(f"{player.name} - Победитель!")
+            input("Нажмите любую клавишу, чтобы закончить игру!")
+            sys.exit(0)
+
+        # check horizontal
+        i = row
+        for j in range(self.size):
+            if self.field[i][j] != symbol:
+                break
+        else:
+            print(f"{player.name} - Победитель!")
+            input("Нажмите любую клавишу, чтобы закончить игру!")
+            sys.exit(0)
+
+
+def change_size(self):
+    print("Укажите размер нового поля: ")
+    while True:
+        try:
+            new_size = int(input())
+            self.size = new_size
+            break
+        except ValueError:
+            print("Вам следует ввести число")
 
 
 if __name__ == "__main__":
