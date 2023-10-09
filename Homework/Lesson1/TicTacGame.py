@@ -2,6 +2,7 @@ import os
 import sys
 import random
 import names
+import time
 
 
 class Player:
@@ -42,7 +43,9 @@ class TicTacGame:
     @staticmethod
     def finish():
         os.system('cls||clear')
-        print("Спасибо за игру!")
+        print("Спасибо за игру!\n")
+        print("Игра автоматически завершится через 15 секунд")
+        time.sleep(15)
         sys.exit(0)
 
     @property
