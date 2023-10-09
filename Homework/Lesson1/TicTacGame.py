@@ -249,15 +249,13 @@ class TicTacGame:
                 sys.exit(0)
 
     def change_size(self):
-        print("\nУкажите размер нового поля: ")
         while True:
             try:
-                new_size = int(input())
+                new_size = int(input("\nУкажите размер нового поля: "))
                 self.size = new_size
             except ValueError:
                 os.system('cls||clear')
-                print("\nВам следует ввести число!")
-                print("Попробуйте снова: ")
+                print("\nВам следует ввести число (больше 2)!")
             else:
                 break
 
