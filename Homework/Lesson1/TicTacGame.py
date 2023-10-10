@@ -10,6 +10,9 @@ class Player:
         self.name = name
         self._symbol = symbol
 
+    def __repr__(self):
+        return self.name
+
     @property
     def symbol(self):
         return self._symbol
@@ -23,7 +26,7 @@ class Player:
 
 class TicTacGame:
     def __init__(self):
-        self._size = 15
+        self._size = 3
         self.field = [[" " for _ in range(self.size)] for _ in range(self.size)]
 
     def __repr__(self):
@@ -123,6 +126,7 @@ class TicTacGame:
             self.show_start_game_menu()
             choice = input().strip()
             if choice == '1':
+                os.system('cls||clear')
                 self.start_game_vs_user()
                 flag = False
             elif choice == '2':
@@ -164,8 +168,9 @@ class TicTacGame:
             player_1 = player_o
             player_2 = player_x
 
-        print(f"{player_1}, вы ходите первым")
-        print()
+        print(f"\n{player_1}, вы ходите первым\n")
+
+        input("Нажмите Enter, чтобы продолжить")
         return player_1, player_2
 
     def start_game_vs_user(self):
@@ -178,17 +183,20 @@ class TicTacGame:
             else:
                 curr_player = player_2
 
+            print(self)
             print(f"{curr_player}, ваша очередь делать ход")
             curr_row, curr_col = self.get_row_and_col()
             self.field[curr_row][curr_col] = curr_player.symbol
+            print(self.field)
+
             self.check_win(curr_row, curr_col, curr_player)
             count_steps += 1
+            os.system('cls||clear')
 
     def get_row_and_col(self):
         while True:
             try:
                 row_number = int(input("Выберите номер строки: "))
-                print()
                 col_number = int(input("Выберите номер столбца: "))
                 if (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
                     print(f"Число должно быть в диапазоне от 1 до {self._size + 1}")
