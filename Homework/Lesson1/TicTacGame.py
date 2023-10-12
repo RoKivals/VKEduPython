@@ -130,6 +130,7 @@ class TicTacGame:
                 self.start_game_vs_user()
                 flag = False
             elif choice == '2':
+                print("Как говорил Буянов, игра в стадии беты, поэтому ждите!")
                 pass
             elif choice == '3' or choice == 'quit':
                 break
@@ -189,7 +190,11 @@ class TicTacGame:
             self.field[curr_row][curr_col] = curr_player.symbol
             print(self.field)
 
-            self.check_win(curr_row, curr_col, curr_player)
+            if self.check_win(curr_row, curr_col, curr_player):
+                print(f"{curr_player.name} - Победитель!")
+                input("Нажмите любую клавишу, чтобы закончить игру!")
+                sys.exit(0)
+
             count_steps += 1
             os.system('cls||clear')
 
@@ -216,6 +221,7 @@ class TicTacGame:
         return self.field[row][col] == ' '
 
     def check_win(self, row, col, player):
+        result = False
         symbol = player.symbol
         # check main diag
         if row == col:
@@ -223,9 +229,7 @@ class TicTacGame:
                 if self.field[i][i] != symbol:
                     break
             else:
-                print(f"{player.name} - Победитель!")
-                input("Нажмите любую клавишу, чтобы закончить игру!")
-                sys.exit(0)
+                result = True
 
         # check side diag
         elif row == abs(self.size - col - 1):
@@ -234,9 +238,7 @@ class TicTacGame:
                     if self.field[i][j] != symbol and i == self.size - j - 1:
                         break
                 else:
-                    print(f"{player.name} - Победитель!")
-                    input("Нажмите любую клавишу, чтобы закончить игру!")
-                    sys.exit(0)
+                    result = True
 
         else:
             # check vertical
@@ -245,9 +247,7 @@ class TicTacGame:
                 if self.field[i][j] != symbol:
                     break
             else:
-                print(f"{player.name} - Победитель!")
-                input("Нажмите любую клавишу, чтобы закончить игру!")
-                sys.exit(0)
+                result = True
 
             # check horizontal
             i = row
@@ -255,9 +255,8 @@ class TicTacGame:
                 if self.field[i][j] != symbol:
                     break
             else:
-                print(f"{player.name} - Победитель!")
-                input("Нажмите любую клавишу, чтобы закончить игру!")
-                sys.exit(0)
+                result = True
+        return result
 
     def change_size(self):
         while True:
