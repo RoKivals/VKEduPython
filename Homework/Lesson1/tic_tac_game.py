@@ -1,27 +1,14 @@
 import os
 import sys
 import random
-import names
 import time
 
+import names
+from player import *
 
-class Player:
-    def __init__(self, name, symbol):
-        self.name = name
-        self._symbol = symbol
 
-    def __repr__(self):
-        return self.name
-
-    @property
-    def symbol(self):
-        return self._symbol
-
-    @symbol.setter
-    def symbol(self, val):
-        if val not in ['X', 'O']:
-            raise ValueError("Только X или O")
-        self._symbol = val
+class CustomException(ValueError):
+    pass
 
 
 class TicTacGame:
@@ -48,7 +35,7 @@ class TicTacGame:
         os.system('cls||clear')
         print("Спасибо за игру!\n")
         print("Игра автоматически завершится через 15 секунд")
-        time.sleep(15)
+        time.sleep(10)
         sys.exit(0)
 
     @property
@@ -58,16 +45,16 @@ class TicTacGame:
     @size.setter
     def size(self, new_size):
         if new_size < 3:
-            raise ValueError("Размер поля должен быть больше 3")
+            raise CustomException("Размер поля должен быть больше 3")
         self._size = new_size
 
     @staticmethod
     def show_main_menu():
-        os.system('cls||clear')
-        print("Добро пожаловать в игру \"Крестики-Нолики\"")
-        print()
-        print("Введите, чтобы выбрать действие")
+        os.system("cls||clear")
         print('''
+Добро пожаловать в игру \"Крестики-Нолики\"
+        
+Введите, чтобы выбрать действие:
         1. Играть
         2. Настройки
         3. Выйти
@@ -75,46 +62,49 @@ class TicTacGame:
 
     @staticmethod
     def show_settings_menu():
-        os.system('cls||clear')
-        print("Введите, чтобы выбрать действие: ")
+        os.system("cls||clear")
         print('''
+Введите, чтобы выбрать действие: 
                 1. Изменить размеры поля
                 2. Вернуться
         ''')
 
     @staticmethod
     def show_start_game_menu():
-        os.system('cls||clear')
-        print("Выберите режим, в котором хотите играть")
-        print("1. Два игрока")
-        print("2. Против ПК (Бета версия)")
-        print("3. Вернуться")
+        os.system("cls||clear")
+        print('''
+Выберите режим, в котором хотите играть
+        1. Два игрока
+        2. Против ПК (Бета версия)
+        3. Вернуться
+        ''')
 
     def main_menu(self):
         flag = True
         while flag:
             self.show_main_menu()
+            # TODO: сделать обработку ввода в отд функции
             choice = input().strip()
             if choice == '1':
                 self.start_game_menu()
-                continue
             elif choice == '2':
                 self.setting_menu()
-                continue
-            elif choice == '3' or choice == 'quit':
+            elif choice in {'3', 'quit'}:
                 self.finish()
                 flag = False
             else:
                 print("Такого варианта нет, попробуйте заново:")
 
     def setting_menu(self):
-        flag = True
-        while flag:
+        while True:
             self.show_settings_menu()
             choice = input().strip()
             if choice == '1':
-                self.change_size()
-                flag = False
+                while True:
+                    new_size = input("\nУкажите размер нового поля: ")
+                    res = self.change_size(new_size)
+                    if res == 0:
+                        break
             elif choice == '2':
                 break
             else:
@@ -131,8 +121,8 @@ class TicTacGame:
                 flag = False
             elif choice == '2':
                 print("Как говорил Буянов, игра в стадии беты, поэтому ждите!")
-                pass
-            elif choice == '3' or choice == 'quit':
+                time.sleep(1)
+            elif choice in {'3', 'quit'}:
                 break
             else:
                 print("Такого варианта нет, попробуйте заново:")
@@ -187,7 +177,7 @@ class TicTacGame:
             print(self)
             print(f"{curr_player}, ваша очередь делать ход")
             curr_row, curr_col = self.get_row_and_col()
-            self.field[curr_row][curr_col] = curr_player.symbol
+            self.field[curr_row - 1][curr_col - 1] = curr_player.symbol
             print(self.field)
 
             if self.check_win(curr_row, curr_col, curr_player):
@@ -203,7 +193,8 @@ class TicTacGame:
             try:
                 row_number = int(input("Выберите номер строки: "))
                 col_number = int(input("Выберите номер столбца: "))
-                if (row_number >= self.size + 1 or row_number <= 0) or (col_number >= self.size + 1 or col_number <= 0):
+                if ((row_number >= self.size + 1 or row_number <= 0)
+                        or (col_number >= self.size + 1 or col_number <= 0)):
                     print(f"Число должно быть в диапазоне от 1 до {self._size + 1}")
                     continue
 
@@ -234,45 +225,47 @@ class TicTacGame:
         # check side diag
         elif row == abs(self.size - col - 1):
             for i in range(self.size):
-                for j in range(self.size):
-                    if self.field[i][j] != symbol and i == self.size - j - 1:
-                        break
-                else:
-                    result = True
+                j = self.size - i - 1
+                if self.field[i][j] != symbol:
+                    break
+            else:
+                result = True
 
+        # check vertical
+        j = col
+        for i in range(self.size):
+            if self.field[i][j] != symbol:
+                break
         else:
-            # check vertical
-            j = col
-            for i in range(self.size):
-                if self.field[i][j] != symbol:
-                    break
-            else:
-                result = True
+            result = True
 
-            # check horizontal
-            i = row
-            for j in range(self.size):
-                if self.field[i][j] != symbol:
-                    break
-            else:
-                result = True
+        # check horizontal
+        i = row
+        for j in range(self.size):
+            if self.field[i][j] != symbol:
+                break
+        else:
+            result = True
+
         return result
 
-    def change_size(self):
-        while True:
-            try:
-                new_size = int(input("\nУкажите размер нового поля: "))
-                self.size = new_size
-            except ValueError:
-                os.system('cls||clear')
-                print("\nВам следует ввести число (больше 2)!")
-            else:
-                break
+    def change_size(self, value):
+        try:
+            new_size = int(value)
+            self.size = new_size
+        except ValueError:
+            os.system('cls||clear')
+            print("\nВам следует ввести число (больше 2)!")
+        else:
+            return 0
 
 
 def main():
     game = TicTacGame()
-    game.main_menu()
+    state = 0
+    while True:
+        if state == 0:
+            state = game.main_menu()
 
 
 if __name__ == "__main__":
