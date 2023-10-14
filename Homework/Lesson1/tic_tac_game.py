@@ -79,36 +79,66 @@ class TicTacGame:
         3. Вернуться
         ''')
 
-    def main_menu(self):
-        flag = True
-        while flag:
-            self.show_main_menu()
-            # TODO: сделать обработку ввода в отд функции
-            choice = input().strip()
-            if choice == '1':
-                self.start_game_menu()
-            elif choice == '2':
-                self.setting_menu()
-            elif choice in {'3', 'quit'}:
-                self.finish()
-                flag = False
-            else:
-                print("Такого варианта нет, попробуйте заново:")
-
-    def setting_menu(self):
+    @staticmethod
+    def get_state_main_menu():
         while True:
-            self.show_settings_menu()
-            choice = input().strip()
-            if choice == '1':
-                while True:
-                    new_size = input("\nУкажите размер нового поля: ")
-                    res = self.change_size(new_size)
-                    if res == 0:
-                        break
-            elif choice == '2':
+            result = input().strip()
+            if result == '1':
+                result = 1
+                break
+            elif result == '2':
+                result = 2
+                break
+            elif result in {'3', 'quit'}:
+                result = 3
                 break
             else:
                 print("Такого варианта нет, попробуйте заново:")
+        return result
+
+    def main_menu(self):
+        self.show_main_menu()
+        new_state = self.get_state_main_menu()
+        return new_state
+        # choice = input().strip()
+        # if choice == '1':
+        #     self.start_game_menu()
+        # elif choice == '2':
+        #     self.setting_menu()
+        # elif choice in {'3', 'quit'}:
+        #     self.finish()
+        #     flag = False
+        # else:
+        #     print("Такого варианта нет, попробуйте заново:")
+
+    @staticmethod
+    def get_state_setting():
+        while True:
+            result = input().strip()
+            if result == '1':
+                result = 4
+                break
+            elif result == '2':
+                result = 0
+                break
+            else:
+                print("Такого варианта нет, попробуйте заново:")
+        return result
+
+    def setting_menu(self):
+        self.show_settings_menu()
+        new_state = self.get_state_setting()
+        return new_state
+        # if choice == '1':
+        #     while True:
+        #         new_size = input("\nУкажите размер нового поля: ")
+        #         res = self.change_size(new_size)
+        #         if res == 0:
+        #             break
+        # elif choice == '2':
+        #     break
+        # else:
+        #     print("Такого варианта нет, попробуйте заново:")
 
     def start_game_menu(self):
         flag = True
