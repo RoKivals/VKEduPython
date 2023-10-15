@@ -100,16 +100,6 @@ class TicTacGame:
         self.show_main_menu()
         new_state = self.get_state_main_menu()
         return new_state
-        # choice = input().strip()
-        # if choice == '1':
-        #     self.start_game_menu()
-        # elif choice == '2':
-        #     self.setting_menu()
-        # elif choice in {'3', 'quit'}:
-        #     self.finish()
-        #     flag = False
-        # else:
-        #     print("Такого варианта нет, попробуйте заново:")
 
     @staticmethod
     def get_state_setting():
@@ -124,6 +114,21 @@ class TicTacGame:
             else:
                 print("Такого варианта нет, попробуйте заново:")
         return result
+
+    def get_size(self):
+        while True:
+            new_size = input("\nУкажите размер нового поля: ")
+            res = self.change_size(new_size)
+
+    def change_size(self, value):
+        try:
+            new_size = int(value)
+            self.size = new_size
+        except CustomException:
+            os.system('cls||clear')
+            print("\nВам следует ввести число, которое больше 2!")
+        else:
+            return 0
 
     def setting_menu(self):
         self.show_settings_menu()
@@ -279,16 +284,6 @@ class TicTacGame:
 
         return result
 
-    def change_size(self, value):
-        try:
-            new_size = int(value)
-            self.size = new_size
-        except ValueError:
-            os.system('cls||clear')
-            print("\nВам следует ввести число (больше 2)!")
-        else:
-            return 0
-
 
 def main():
     game = TicTacGame()
@@ -296,6 +291,14 @@ def main():
     while True:
         if state == 0:
             state = game.main_menu()
+        elif state == 1:
+            state = game.start_game_menu()
+        elif state == 2:
+            state = game.setting_menu()
+        elif state == 3:
+            game.finish()
+        elif state == 4:
+            state = game.change_size()
 
 
 if __name__ == "__main__":
