@@ -34,7 +34,7 @@ class TicTacGame:
     def finish():
         os.system('cls||clear')
         print("Спасибо за игру!\n")
-        print("Игра автоматически завершится через 15 секунд")
+        print("Игра автоматически завершится через 10 секунд")
         time.sleep(10)
         sys.exit(0)
 
@@ -115,52 +115,56 @@ class TicTacGame:
                 print("Такого варианта нет, попробуйте заново:")
         return result
 
-    def get_size(self):
+    def get_input_size(self):
         while True:
             new_size = input("\nУкажите размер нового поля: ")
-            res = self.change_size(new_size)
+            try:
+                new_size = int(new_size)
+                self.size = new_size
 
-    def change_size(self, value):
-        try:
-            new_size = int(value)
-            self.size = new_size
-        except CustomException:
-            os.system('cls||clear')
-            print("\nВам следует ввести число, которое больше 2!")
-        else:
-            return 0
+            except CustomException:
+                os.system('cls||clear')
+                print("\nВам следует ввести число, которое больше 2!")
+
+            except ValueError:
+                os.system('cls||clear')
+                print("\nВам следует ввести число!")
+
+            else:
+                return 2  # setting_menu()
+
+    def change_size(self):
+        new_state = self.get_input_size()
+        return new_state
 
     def setting_menu(self):
         self.show_settings_menu()
         new_state = self.get_state_setting()
         return new_state
-        # if choice == '1':
-        #     while True:
-        #         new_size = input("\nУкажите размер нового поля: ")
-        #         res = self.change_size(new_size)
-        #         if res == 0:
-        #             break
-        # elif choice == '2':
-        #     break
-        # else:
-        #     print("Такого варианта нет, попробуйте заново:")
 
-    def start_game_menu(self):
-        flag = True
-        while flag:
-            self.show_start_game_menu()
+    @staticmethod
+    def get_state_game_menu():
+        while True:
             choice = input().strip()
             if choice == '1':
                 os.system('cls||clear')
-                self.start_game_vs_user()
-                flag = False
+                choice = 5
+                break
             elif choice == '2':
                 print("Как говорил Буянов, игра в стадии беты, поэтому ждите!")
-                time.sleep(1)
+                choice = 1
+                break
             elif choice in {'3', 'quit'}:
+                choice = 0
                 break
             else:
                 print("Такого варианта нет, попробуйте заново:")
+        return choice
+
+    def start_game_menu(self):
+        self.show_start_game_menu()
+        new_state = self.get_state_game_menu()
+        return new_state
 
     @staticmethod
     def input_player_names():
@@ -198,30 +202,6 @@ class TicTacGame:
 
         input("Нажмите Enter, чтобы продолжить")
         return player_1, player_2
-
-    def start_game_vs_user(self):
-        player_1, player_2 = self.choosing_order()
-        count_steps = 0
-
-        while True:
-            if count_steps % 2 == 0:
-                curr_player = player_1
-            else:
-                curr_player = player_2
-
-            print(self)
-            print(f"{curr_player}, ваша очередь делать ход")
-            curr_row, curr_col = self.get_row_and_col()
-            self.field[curr_row - 1][curr_col - 1] = curr_player.symbol
-            print(self.field)
-
-            if self.check_win(curr_row, curr_col, curr_player):
-                print(f"{curr_player.name} - Победитель!")
-                input("Нажмите любую клавишу, чтобы закончить игру!")
-                sys.exit(0)
-
-            count_steps += 1
-            os.system('cls||clear')
 
     def get_row_and_col(self):
         while True:
@@ -284,6 +264,30 @@ class TicTacGame:
 
         return result
 
+    def start_game_vs_user(self):
+        player_1, player_2 = self.choosing_order()
+        count_steps = 0
+
+        while True:
+            if count_steps % 2 == 0:
+                curr_player = player_1
+            else:
+                curr_player = player_2
+
+            print(self)
+            print(f"{curr_player}, ваша очередь делать ход")
+            curr_row, curr_col = self.get_row_and_col()
+            self.field[curr_row - 1][curr_col - 1] = curr_player.symbol
+            print(self.field)
+
+            if self.check_win(curr_row, curr_col, curr_player):
+                print(f"{curr_player.name} - Победитель!")
+                input("Нажмите любую клавишу, чтобы закончить игру!")
+                sys.exit(0)
+
+            count_steps += 1
+            os.system('cls||clear')
+
 
 def main():
     game = TicTacGame()
@@ -299,6 +303,8 @@ def main():
             game.finish()
         elif state == 4:
             state = game.change_size()
+        elif state == 5:
+            game.start_game_vs_user()
 
 
 if __name__ == "__main__":

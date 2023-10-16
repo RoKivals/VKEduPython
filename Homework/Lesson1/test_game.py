@@ -30,6 +30,7 @@ class TestGame(unittest.TestCase):
                 else:
                     self.assertFalse(self.game.check_win(x, y, player))
 
+
     def test_change_size(self):
         self.game = TicTacGame()
         self.game.change_size('12')

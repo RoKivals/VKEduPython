@@ -204,14 +204,14 @@ def func5(start, end, /):
 import time
 
 def timer(func):
-def wrapper(*args, **kwargs):
-start = time.time()
-print(f"Функция {func.__name__} начала свою работу в {start}")
-res = func(*args, **kwargs)
-end = time.time()
-print(f"Функция {func.__name__} закончила свою работу в {end}")
-return res
-return wrapper
+  def wrapper(*args, **kwargs):
+    start = time.time()
+    print(f"Функция {func.__name__} начала свою работу в {start}")
+    res = func(*args, **kwargs)
+    end = time.time()
+    print(f"Функция {func.__name__} закончила свою работу в {end}")
+    return res
+  return wrapper
 ```
 
 Теперь о том, как применять этот декоратор к каким-либо функциям:
@@ -315,10 +315,10 @@ return wrapper
 ``` python
 def fibonacci(n):
 @functools.lru_cache(maxsize = 128, typed = False)
-def _fibonacci(n):
-if n < 2:
-return 1
-return _fibonacci(n - 1) + _fibonacci(n - 2)
+  def _fibonacci(n):
+    if n < 2:
+      return 1
+  return _fibonacci(n - 1) + _fibonacci(n - 2)
 ```
 То есть, `lru_cache` сохраняет ранее подсчитанные значения функции и подставляет их в случае необходимости повторного вычисления. Это очень полезно при работе с рекурсивными фунциями или функциями, где определенные этапы вычисления повторяются много раз с теми же результатами.
 
