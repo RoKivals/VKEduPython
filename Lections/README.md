@@ -107,9 +107,9 @@ Python - спецификация языка (как и стандарты C++).
 - Кортеж (tuple) - неизменяемый список
 
 - Swap (смена значений) - работает с двумя кортежами:
-    - a, b = b, a
+  - a, b = b, a
 - Распаковка (присвоение одной переменной списка значений с нефиксированным количеством элементов)
-    * a, b* = list(<elements>)
+  * a, b* = list(<elements>)
 - Словарь
 - Множество (set, frozenset)
 
@@ -117,7 +117,7 @@ Python - спецификация языка (как и стандарты C++).
 
 - _ in <iter_object> это итерирование по объекту
 - sort (sorted) - сортировка коллекции in_place (на копии).
-    * obj.sort / sorted(obj)
+  * obj.sort / sorted(obj)
 
 ### Типы с одним значением
 
@@ -586,8 +586,8 @@ c = (None, True)
 - интеграционное - проверка взаимодействия нескольких систем между собой
 - регресионное - тесты, делающиеся исходя из ошибок
 - тесты производительности
-    - нагрузочное
-    - стресс
+  - нагрузочное
+  - стресс
 
 **TDD (Test Driven Development)** - техника разработки ПО, которая состоит из повторения циклов разработки: сначала
 пишется тест, затем пишется код, позволяющий пройти тест, а потом делается рефакторинг кода и после всё по новой.
@@ -675,9 +675,9 @@ class TestString(unittest.TestCase):
 - Поля, объявленные вне конструктора являются полями класса (общими для всех экземпляров). Поля внутри конструктора
   относятся к конкретному экземпляру класса. Поля класса нельзя изменить через экземпляры
 - Модификаторы доступа (является формальным соглашением между разработчиками):
-    - public: переменные без знака подчёркивания в начале `self.name`
-    - protected: 1 знак подчеркивания в начале `self._protected`, доступен классам наследникам
-    - private: 2 знака подчёркивания в начале `self.__private`, доступен только внутри этого класса
+  - public: переменные без знака подчёркивания в начале `self.name`
+  - protected: 1 знак подчеркивания в начале `self._protected`, доступен классам наследникам
+  - private: 2 знака подчёркивания в начале `self.__private`, доступен только внутри этого класса
 - После создания класса, в него можно добавлять поля с помощью `__dict__[<name>] = <value>`, причём name должен
   являться `str`. Поля с 2 нижними подчеркиваниями, объявленные таким образом, будут являться **public**!
 - Значения полей можно получать с помощью `getattr(<object>, <name>)`, где `object` - экземпляр класса, а `name` - имя
@@ -701,26 +701,26 @@ class TestString(unittest.TestCase):
 
 ```python
 class Boo:
-    @staticmethod
-    def print_static():
-        print("It's static method")
+  @staticmethod
+  def print_static():
+    print("It's static method")
 
-    @classmethod
-    def print_cls(cls):
-        print(f"It's class method for {cls.__name__}")
+  @classmethod
+  def print_cls(cls):
+    print(f"It's class method for {cls.__name__}")
 
-    @classmethod
-    def create(cls):
-        print("Class method create")
-        print(type(cls))
-        return cls(44)
+  @classmethod
+  def create(cls):
+    print("Class method create")
+    print(type(cls))
+    return cls(44)
 
-    def __init__(self, value):
-        self.val = value
-        print(f"Initializing instance with value {self.val}")
+  def __init__(self, value):
+    self.val = value
+    print(f"Initializing instance with value {self.val}")
 
-    def __str__(self):
-        return f"{self.__class__.__name__}:{self.val=}"
+  def __str__(self):
+    return f"{self.__class__.__name__}:{self.val=}"
 ```
 
 ### Магические методы и атрибуты
@@ -785,22 +785,22 @@ MRO - method resolution order - порядок разрешения методо
 
 ```python
 class A:
-    pass
+  pass
 
 
 class B:
-    pass
+  pass
 
 
 class C(A, B):
-    pass
+  pass
 
 
 C.mro()  # C -> A -> B -> object
 
 
 class C(B, A):
-    pass
+  pass
 
 
 C.mro()  # C -> B -> B -> object
@@ -884,11 +884,11 @@ NewClass = type("MyClass", (), {})
 
 ```python
 class AMeta(type):
-    pass
+  pass
 
 
 class Person(metaclass=AMeta):
-    pass
+  pass
 ```
 
 ### ABC. Абстрактность
@@ -983,7 +983,7 @@ import collections
 
 defdict = collections.defaultdict(list)
 for i in range(2):
-    defdict[i].append(i)
+  defdict[i].append(i)
 
 # 0: [0], 1:[1], 2:[2]
 ```
@@ -1056,12 +1056,12 @@ Thread (Поток) - базовая единица в ОС, которой вы
 Создание и запуск:
 
 - `threading.Thread` - базовый класс всех потоков, если мы хотим создать свой, то наследуемся от него
-    - group - группировка потоков (не реализована)
-    - target - программный код, исполняемый в потоке
-    - name - имя потока
-    - args - позиционные аргументы
-    - kwargs - именованные аргументы
-    - daemon - является ли поток демоническим. Если равен `None`, то значение наследуется от родительского потока
+  - group - группировка потоков (не реализована)
+  - target - программный код, исполняемый в потоке
+  - name - имя потока
+  - args - позиционные аргументы
+  - kwargs - именованные аргументы
+  - daemon - является ли поток демоническим. Если равен `None`, то значение наследуется от родительского потока
 
   Потоки-демоны выполняются в фоновом режиме, поэтому они не влияют на завершение родительского потока.
 - `start` - запуск потока
@@ -1083,12 +1083,12 @@ import threading
 
 
 def func():
-    pass
+  pass
 
 
 class CustomThread(threading.Thread):
-    def run(self):
-        func()
+  def run(self):
+    func()
 
 
 th = CustomThread()
@@ -1101,12 +1101,103 @@ th.join()
 Оба способа идентичны, но использование наследования от `Thread` является более гибким и даёт больше возможностей при
 работе с потоком
 
+Работа с потоками, модулем `threading`:
+
+- `threading.active_count()` - выводит кол-во активных потоков в данный момент
+- `threading.current_thread()` - выводит информацию о текущем потоке
+- `threading.main_thread()` - выводит информацию об основном потоке
+- `threading.enumerate()` - список всех активных потоков
+- `threading.get_ident()` - идентификатор текущего потока от Python
+- `threading.get_native_id()` - идентификатор текущего потока от ОС
+- У каждого потока стек свой, но информация лежащая в куче - общая у созданных потоков и родительского потока.
+  Поэтому для создания собственных переменных в потоке используется класс `local()`
+
+Примеры использования:
+
+```python
+import threading
+import time
+
+
+class DataProcesor(threading.Thread):
+  def __init__(self, n):
+    self.n = n
+    super().__init__()
+
+  def run(self):
+    print(f"{self.name=}, {self.native_id=}, {self.daemon}")
+    for i in range(self.n):
+      time.sleep(1)
+      print("after sleep", i)
+```
+
+```python
+proc = DataProcesor(7)
+proc.start()
+time.sleep(2)
+print("After start in 2 seconds")
+```
+
+В примере выше, оба потока выполняются одновременно, ни один из них не останавливается
+
+```python
+proc = DataProcesor(7)
+proc.start()
+time.sleep(2)
+print("After start in 2 seconds")
+proc.join()
+print("After join")
+```
+
+Но как только мы использовали `join`, наш основной процесс остановил выполненние, дождался завершения работы вызываемого
+потока и только после этого продолжил свою работу и вывел последнюю фразу
+
+Попытка распараллелить вычисления:
+
+1) Как решается задача в лоб одним потоком
+
+```python
+%%time
+
+N = 10 ** 8
+
+
+def counter(a, b):
+  while a <= b:
+    a += 1
+
+
+counter(0, N)
+```
+
+2) Решение той же задачи с использованием нескольких потоков:
+
+```python
+%%time
+import threading
+
+N_THREADS = 2
+INTERVAL_SIZE = N // N_THREADS
+
+
+def counter(l, r):
+    print(f"{threading.current_thread().name} {l=}, {r=})")
+    while l < r:
+        l += 1
+
+
+threads = [
+    threading.Thread(target=counter, args=(i * INTERVAL_SIZE, (i + 1) * INTERVAL_SIZE)) for i in range(N_THREADS)
+]
+
+for th in threads:
+    th.start()
+
+for th in threads:
+    th.join()
+```
+
 GIL (Global Intepreter Limit) - глобальное ограничение интерпретатора, это способ синхронизации потоков в Python
-
-
-
-
-
 
 # Лекция №7 (09.11.23)
 
@@ -1132,17 +1223,17 @@ GIL (Global Intepreter Limit) - глобальное ограничение ин
 
 ```python
 def insertion_sort(arr: list):
-    def _helper(arr, start):
-        idx = start - 1
+  def _helper(arr, start):
+    idx = start - 1
 
-        for i in range(idx, -1, -1):
-            if arr[i] > arr[idx]:
-                arr[i + 1], arr[idx] = arr[idx], arr[i + 1]
-            else:
-                break
+    for i in range(idx, -1, -1):
+      if arr[i] > arr[idx]:
+        arr[i + 1], arr[idx] = arr[idx], arr[i + 1]
+      else:
+        break
 
-    for i in range(1, len(arr)):
-        _helper(arr, i)
+  for i in range(1, len(arr)):
+    _helper(arr, i)
 ```
 
 Сортировка слиянием (`MergeSort`). Массив разбивается пополам, после чего каждая часть сортируется отдельно, потом
