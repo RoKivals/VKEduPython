@@ -28,3 +28,7 @@ def read_values():
 
 def func(x: str):
     return x.upper()
+
+
+def main():
+    pass
