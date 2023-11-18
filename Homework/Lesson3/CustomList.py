@@ -25,6 +25,36 @@ class CustomList(list):
     def __rsub__(self, other):
         return self - other
 
+    def sum(self):
+        res = 0
+        for elem in self:
+            res += elem
+
+        return res
+
+    def __eq__(self, other):
+        return self.sum() == other.sum()
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __lt__(self, other):
+        return self.sum() < other.sum()
+
+    def __gt__(self, other):
+        return self.sum() > other.sum()
+
+    def __le__(self, other):
+        return self < other or self == other
+
+    def __ge__(self, other):
+        return self > other or self == other
+
+    def __str__(self):
+        res = ""
+        for elem in self:
+            pass
+
 
 def main():
     arr = CustomList(4, 5, 6)
