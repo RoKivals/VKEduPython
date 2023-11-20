@@ -10,41 +10,39 @@ class TestCustomList(unittest.TestCase):
 
     def test_add(self):
         self.answers = [CustomList(1, 7, -9, 12),
-                        CustomList(-2, 5, -1, 9),
-                        CustomList(-14, 10, 19, 28, -30)]
-        test_lists = [self.test_lists("Summ equal length", [1, 2, -5, 3])]
+                        CustomList(-2, 5, -1, 9)]
+        lists = [self.test_lists("Summ equal length", [1, 2, -5, 3]),
+                 self.test_lists("Summ different length", [-2, 0, 3])]
 
-        # [-2, 0, 3], [-14, 5, 23, 19, -30]
+        for test, answer in zip(lists, self.answers):
+            with self.subTest(msg=test.name):
+                self.assertEqual(test.arr + self.arr, answer)
 
-        for test in test_lists:
-            with self.subTest(test.name):
-                self.assertEqual(test.arr + self.arr, CustomList(1, 7, -9, 12))
+    def test_subtraction(self):
+        self.answers = [CustomList(1, 5, 1, 6),
+                        CustomList(0, 0, -1, 9)]
 
-    def test_diff(self):
-        sum1 = self.arr + CustomList(1, 2, -5, 3)
-        sum2 = self.arr + [1, 2, -5, 3]
+        lists = [self.test_lists("Substract equal length", [-1, 0, -5, 3]),
+                 self.test_lists("Substract different length", [0, 5, -3])]
 
-        sum3 = self.arr + CustomList(-2, 0, 3)
-        sum4 = self.arr + [-2, 0, 3]
+        for test, answer in zip(lists, self.answers):
+            with self.subTest(msg=test.name):
+                self.assertEqual(test.arr - self.arr, answer)
 
-        sum5 = CustomList(-14, 5, 23, 19, -30) + self.arr
-        sum6 = [-14, 5, 23, 19, -30] + self.arr
+    def test_str(self):
+        self.answers = ["-1 0 -5 3 -3",
+                        "No elements in list"]
 
-        sum7 = CustomList() + CustomList()
+        lists = [self.test_lists("Str of filled list", CustomList(-1, 0, -5, 3)),
+                 self.test_lists("Str of empty list", CustomList())]
 
-        self.assertEqual(sum1, CustomList(1, 7, -9, 12))
-        self.assertEqual(sum2, CustomList(1, 7, -9, 12))
-
-        self.assertEqual(sum3, CustomList(-2, 5, -1, 9))
-        self.assertEqual(sum4, CustomList(-2, 5, -1, 9))
-
-        self.assertEqual(sum5, CustomList(-14, 10, 19, 28, -30))
-        self.assertEqual(sum6, CustomList(-14, 10, 19, 28, -30))
-        self.assertEqual(sum7, CustomList())
+        for test, answer in zip(lists, self.answers):
+            with self.subTest(msg=test.name):
+                self.assertEqual(test.arr.__str__(), answer)
 
 
 def main():
-    pass
+    unittest.main()
 
 
 if __name__ == '__main__':

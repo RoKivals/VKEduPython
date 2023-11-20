@@ -25,6 +25,9 @@ class CustomList(list):
     def __rsub__(self, other):
         return self - other
 
+    def is_empty(self):
+        return len(self) == 0
+
     def sum(self):
         res = 0
         for elem in self:
@@ -51,15 +54,9 @@ class CustomList(list):
         return self > other or self == other
 
     def __str__(self):
-        res = ""
-        for elem in self:
-            pass
-
-
-def main():
-    arr = CustomList(4, 5, 6)
-    print([2, 0] - arr)
-
-
-if __name__ == '__main__':
-    main()
+        if self.is_empty():
+            res = "No elements in list"
+        else:
+            res = " ".join(str(elem) for elem in self)
+            res = f"{res} {str(self.sum())}"
+        return res
