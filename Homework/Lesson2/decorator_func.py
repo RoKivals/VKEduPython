@@ -1,30 +1,26 @@
 import time
+from collections import deque
 
 
-def mean(func, last_calls: list):
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        res = func(*args, **kwargs)
-        end = time.time()
-        work_time = end - start
-        print(f"Функция {func.__name__} работала {time} секунд")
-        return res
+def mean(last_calls: int):
+    def print_deque(calls):
+        print(" ".join(str(elem) for elem in calls))
 
-    return wrapper
+    def _mean(func):
+        calls = deque()
 
+        def wrapper(*args, **kwargs):
+            start = time.time()
+            res = func(*args, **kwargs)
+            end = time.time()
+            work_time = end - start
 
-def main():
-    @mean(10)
-    def foo(arg1):
-        pass
+            print_deque(calls)
+            if len(calls) == last_calls:
+                calls.pop()
+            calls.appendleft(work_time)
+            return res
 
-    @mean(2)
-    def boo(arg1):
-        pass
+        return wrapper
 
-    for _ in range(100):
-        foo("Walter")
-
-
-if __name__ == '__main__':
-    main()
+    return _mean
