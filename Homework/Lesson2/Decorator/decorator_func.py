@@ -4,7 +4,7 @@ from collections import deque
 
 def mean(last_calls: int):
     def print_deque(calls):
-        print(" ".join(str(elem) for elem in calls))
+        print(" ".join(f"{elem:4f}" for elem in calls))
 
     def _mean(func):
         calls = deque()

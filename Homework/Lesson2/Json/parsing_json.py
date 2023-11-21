@@ -3,7 +3,7 @@ def parsing(json_str: dict, keyword_callback, required_fields=None, keywords=Non
         if key in required_fields:
             for word in keywords:
                 if value.index(word) != -1:
-                    print(keyword_callback(word))
+                    keyword_callback(word)
 
 
 def read_fields():
@@ -27,8 +27,15 @@ def read_values():
 
 
 def func(x: str):
-    return x.upper()
+    pass
 
 
 def main():
-    pass
+    required_fields = read_fields()
+    keywords = read_values()
+
+
+# parsing(json_content, func, required_fields, keywords)
+
+if __name__ == '__main__':
+    main()

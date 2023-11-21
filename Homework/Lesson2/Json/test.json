@@ -1,0 +1,5 @@
+{
+  "key1": "word1 Word2 word3",
+  "key2": "word1 word2 WORD3",
+  "key3": "WoRD1 worD2 word3"
+}

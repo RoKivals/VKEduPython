@@ -1,11 +1,11 @@
-from decorator_func import mean
+from Homework.Lesson2.Decorator.decorator_func import mean
 import random
 
 
 @mean(10)
 def long_func():
-    cnt_digits = random.randint(200, 1000)
-    digits = range(1e6, 1e10)
+    cnt_digits = random.randint(20_000, 100_000)
+    digits = range(1_000_000_000, 100_000_000_000)
     arr = [random.choice(digits) for _ in range(cnt_digits)]
     return arr.sort()
 

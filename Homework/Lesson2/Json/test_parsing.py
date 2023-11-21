@@ -17,14 +17,8 @@ class TestParser(unittest.TestCase):
             json_content = json.loads(file_content)
 
         required_fields = {"key1"}
-        keywords = {"word1"}
+        keywords = {"word1", "Word2"}
         function = MagicMock(name="func")
-
-        # Запуск без mock-объекта
-        # required_fields = read_fields()
-        # keywords = read_values()
-        # parsing(json_content, func, required_fields, keywords)
-
         parsing(json_content, function, required_fields, keywords)
 
         expected = [call("word1")]
