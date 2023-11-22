@@ -10,9 +10,11 @@
 def parse_json(json_str: str, required_fields=None, keywords=None, keyword_callback)
 ```
 
-Например, представим, что json_str = '{"key1": "Word1 word2", "key2": "word2 word3"}', а required_fields = ["key1"], keywords = ["word2"]. Тогда keyword_callback будет вызвана только для слова 'word2' для ключа 'key1'.
+Например, представим, что json_str = '{"key1": "Word1 word2", "key2": "word2 word3"}', а required_fields = ["key1"],
+keywords = ["word2"]. Тогда keyword_callback будет вызвана только для слова 'word2' для ключа 'key1'.
 
 Распарсить json можно так:
+
 ```py
 import json
 
@@ -25,20 +27,23 @@ json_doc = json.loads(json_str)
 
 ### Написать декоратор, который выводит среднее время выполнения последних k вызовов при каждом вызове функции
 
-```py
+```python
 @mean(10)
 def foo(arg1):
     pass
 
+
 @mean(2)
 def boo(arg1):
     pass
+
 
 for _ in range(100):
     foo("Walter")
 ```
 
 ### Использовать mock-объект при тестировании
+
 Использовать mock-объект, например, keyword_callback и проверить, что заглушка вызывалась n число раз.
 
 ### Узнать степень покрытия тестами с помощью библиотеки coverage
@@ -46,5 +51,6 @@ for _ in range(100):
 ### Использовать flake8 и pylint для проверки кода
 
 ### Использовать factory boy (опционально!!!)
+
 Для генерации данных и ключевых слов, можно использовать factory boy (см. файл factory_boy_example.py).
 
