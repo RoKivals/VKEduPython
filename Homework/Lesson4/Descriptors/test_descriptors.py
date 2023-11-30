@@ -1,5 +1,5 @@
 from Descriptors import TrafficSignal
-from Descriptors import Adult
+from Descriptors import ProcessingAge
 
 
 class TrafficLight:
@@ -14,15 +14,15 @@ class TrafficLight:
 
 
 class Person:
-    age = Adult()
+    age = ProcessingAge()
 
-    def __init__(self, age: int):
+    def __init__(self, age):
         self.age = age
 
 
 def main():
-    pass
-
+    p = Person(5)
+    print(p.age)
 
 if __name__ == '__main__':
     main()
