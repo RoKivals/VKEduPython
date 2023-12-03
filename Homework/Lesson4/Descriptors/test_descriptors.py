@@ -24,5 +24,6 @@ def main():
     p = Person(5)
     print(p.age)
 
+
 if __name__ == '__main__':
     main()

@@ -7,6 +7,9 @@ class TrafficSignal:
     def __init__(self):
         self.colors = deque(self.__colors)
 
+    def __set_name__(self, owner, name):
+        self.private_name = f"_{name}"
+
     def __set__(self, obj, new_color):
         if not isinstance(new_color, str):
             raise TypeError("Нужна строка")
@@ -18,10 +21,10 @@ class TrafficSignal:
         while new_color.upper() != self.colors[0]:
             self.colors.append(self.colors.popleft())
 
-        setattr(obj, "_color", self.colors[0])
+        setattr(obj, self.private_name, self.colors[0])
 
     def __get__(self, instance, owner):
-        res = getattr(instance, "_color")
+        res = getattr(instance, self.private_name)
         return res
 
     def __del__(self):
@@ -51,10 +54,14 @@ class ProcessingAge:
         setattr(obj, self.private_name, self.age)
 
     def __get__(self, instance, owner):
-        res = getattr(instance, "self.private_name")
+        res = getattr(instance, self.private_name)
         if res >= 18:
             return "Совершеннолетний"
         return "Несовершеннолетний"
+
+
+class ExpirationDate:
+    pass
 
 
 def main():
