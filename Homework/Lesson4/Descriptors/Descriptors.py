@@ -1,14 +1,16 @@
 from collections import deque
 
 
-class TrafficSignal:
+class Descriptor:
+    def __set_name__(self, owner, name):
+        self.private_name = f"_{name}"
+
+
+class TrafficSignal(Descriptor):
     __colors = ('RED', 'YELLOW', 'GREEN')
 
     def __init__(self):
         self.colors = deque(self.__colors)
-
-    def __set_name__(self, owner, name):
-        self.private_name = f"_{name}"
 
     def __set__(self, obj, new_color):
         if not isinstance(new_color, str):
@@ -35,10 +37,7 @@ class TrafficSignal:
         return f"{self.colors[0]}"
 
 
-class ProcessingAge:
-
-    def __set_name__(self, owner, name):
-        self.private_name = f"_{name}"
+class ProcessingAge(Descriptor):
 
     def __set__(self, obj, new_age):
         if not isinstance(new_age, int):
@@ -60,8 +59,25 @@ class ProcessingAge:
         return "Несовершеннолетний"
 
 
-class ExpirationDate:
-    pass
+class ExpirationDate(Descriptor):
+    def __set__(self, obj, new_age):
+        if not isinstance(new_age, int):
+            print(new_age)
+            raise TypeError("Нужно число")
+
+        if new_age < 0:
+            raise ValueError("Возраст не меньше 0")
+        if new_age > 120:
+            raise ValueError("Столько люди не живут")
+
+        self.age = new_age
+        setattr(obj, self.private_name, self.age)
+
+    def __get__(self, instance, owner):
+        res = getattr(instance, self.private_name)
+        if res >= 18:
+            return "Совершеннолетний"
+        return "Несовершеннолетний"
 
 
 def main():
