@@ -1,4 +1,5 @@
 from collections import deque
+import datetime
 
 
 class Descriptor:
@@ -60,18 +61,17 @@ class ProcessingAge(Descriptor):
 
 
 class ExpirationDate(Descriptor):
-    def __set__(self, obj, new_age):
-        if not isinstance(new_age, int):
-            print(new_age)
-            raise TypeError("Нужно число")
+    def __init__(self, new_date):
+        self.date = 0
+        print("Создан новый дескриптор")
 
-        if new_age < 0:
-            raise ValueError("Возраст не меньше 0")
-        if new_age > 120:
-            raise ValueError("Столько люди не живут")
+    def __set__(self, obj, new_date):
+        if not isinstance(new_date, datetime.date):
+            raise TypeError("Нужна дата")
 
-        self.age = new_age
-        setattr(obj, self.private_name, self.age)
+        if new_date
+            self.date = new_date
+        setattr(obj, self.private_name, self.date)
 
     def __get__(self, instance, owner):
         res = getattr(instance, self.private_name)

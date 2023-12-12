@@ -1,5 +1,6 @@
 from Descriptors import TrafficSignal
 from Descriptors import ProcessingAge
+from Descriptors import ExpirationDate
 
 
 class TrafficLight:
@@ -20,8 +21,17 @@ class Person:
         self.age = age
 
 
+class Product:
+    date = ExpirationDate()
+
+    def __init__(self, date):
+        self.date = date
+
+
 def main():
-    pass
+    p1 = Product(5)
+    p2 = Product(6)
+    p2 = Product(9)
 
 
 if __name__ == '__main__':
