@@ -6,8 +6,8 @@ from Descriptors import ExpirationDate
 class TrafficLight:
     signal = TrafficSignal()
 
-    def __init__(self, signal="RED"):
-        self.signal = signal
+    def __init__(self):
+        self.signal = "RED"
         self.status = "Working"
 
     def change_signal(self, new_color):
@@ -29,9 +29,7 @@ class Product:
 
 
 def main():
-    p1 = Product(5)
-    p2 = Product(6)
-    p2 = Product(9)
+    pass
 
 
 if __name__ == '__main__':

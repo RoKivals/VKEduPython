@@ -61,23 +61,21 @@ class ProcessingAge(Descriptor):
 
 
 class ExpirationDate(Descriptor):
-    def __init__(self, new_date):
-        self.date = 0
-        print("Создан новый дескриптор")
 
     def __set__(self, obj, new_date):
         if not isinstance(new_date, datetime.date):
             raise TypeError("Нужна дата")
 
-        if new_date
-            self.date = new_date
-        setattr(obj, self.private_name, self.date)
+        if new_date < datetime.date.today():
+            raise ValueError("Данный продукт просрочен")
+
+        setattr(obj, self.private_name, new_date)
 
     def __get__(self, instance, owner):
         res = getattr(instance, self.private_name)
-        if res >= 18:
-            return "Совершеннолетний"
-        return "Несовершеннолетний"
+        if res >= datetime.date.today():
+            return "Продукт пригоден к употреблению"
+        return "Продукт просрочен"
 
 
 def main():
