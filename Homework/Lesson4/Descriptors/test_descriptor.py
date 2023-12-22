@@ -1,5 +1,6 @@
 import unittest
 from Homework.Lesson4.Descriptors.descriptor_classes import TrafficLight, Person, Product
+import datetime
 
 
 class TestTrafficLight(unittest.TestCase):
@@ -28,4 +29,25 @@ class TestPerson(unittest.TestCase):
         self.assertEqual(self.p2.age, "Совершеннолетний")
 
     def test_set(self):
-        pass
+        self.p.age = 25
+        self.assertEqual(self.p.age, "Совершеннолетний")
+
+    def test_set_errors(self):
+        self.assertRaises(ValueError, self.p2.change_age, -5)
+        self.assertRaises(TypeError, self.p2.change_age, [-50, 10])
+
+
+class TestExpirationDate(unittest.TestCase):
+    def setUp(self):
+        self.product = Product(datetime.date(2024, 10, 5))
+
+    def test_get(self):
+        self.assertEqual(self.product.date, "Продукт пригоден к употреблению")
+
+    def test_set(self):
+        self.product.change_date(datetime.date(2029, 10, 5))
+        self.assertEqual(self.product.date, "Продукт пригоден к употреблению")
+
+    def test_set_errors(self):
+        self.assertRaises(ValueError, self.product.change_date, datetime.date(2012, 10, 5))
+        self.assertRaises(TypeError, self.product.change_date, "2014-11-11")

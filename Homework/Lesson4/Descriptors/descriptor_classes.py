@@ -20,12 +20,18 @@ class Person:
     def __init__(self, age):
         self.age = age
 
+    def change_age(self, new_age):
+        self.age = new_age
+
 
 class Product:
     date = ExpirationDate()
 
     def __init__(self, date):
         self.date = date
+
+    def change_date(self, new_date):
+        self.date = new_date
 
 
 def main():

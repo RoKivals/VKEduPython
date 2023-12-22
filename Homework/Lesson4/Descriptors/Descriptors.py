@@ -42,7 +42,6 @@ class ProcessingAge(Descriptor):
 
     def __set__(self, obj, new_age):
         if not isinstance(new_age, int):
-            print(new_age)
             raise TypeError("Нужно число")
 
         if new_age < 0:
